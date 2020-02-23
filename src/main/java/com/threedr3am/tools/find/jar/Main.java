@@ -96,7 +96,7 @@ public class Main {
     System.out.println("开始查找类：" + className);
     String[] classNames = className.split(",");
     for (File jar : files) {
-      System.out.print(jar.getName() + ": ");
+      System.out.print(jar.getName() + ":\n");
       URLClassLoader classLoader = new URLClassLoader(new URL[]{jar.toURL()});
       for (int i = 0; i < classNames.length; i++) {
         String name = classNames[i];
@@ -105,8 +105,12 @@ public class Main {
           if ((clazz = classLoader.loadClass(name)) != null) {
             System.out.print(clazz.getName() + " ");
           }
-        } catch (Throwable e) { }
+        } catch (Exception e) {
+        } catch (Error e) {
+          System.err.print("该类在此jar包，但缺少其他引用依赖");
+        }
       }
+      System.out.println();
       if (!fullMode && classNames.length == 1) {
         break;
       }
