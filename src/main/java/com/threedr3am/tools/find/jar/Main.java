@@ -54,9 +54,9 @@ public class Main {
       System.err.println("必须指定path参数，更多信息，执行 java -jar find-class-in-jars-1.0-SNAPSHOT-jar-with-dependencies.jar -help");
     }
 
-    String className = "org/apache/camel/processor/interceptor/BacklogTracer,org.apache.camel.processor.interceptor.BacklogTracer";
-    String path = "/Users/xuanyonghao/security/java/my-project/gadgetinspector/gadget-chains-2020-02-23-01-41.txt";
-    String regex = "/(\\S+?\\.jar)";
+    String className = cmd.getOptionValue("c");
+    String path = cmd.getOptionValue("path");
+    String regex = cmd.getOptionValue("regex");
     Pattern pattern = Pattern.compile(regex);
     boolean fullMode = true;
 
