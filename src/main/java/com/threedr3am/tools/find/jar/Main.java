@@ -105,7 +105,7 @@ public class Main {
           if ((clazz = classLoader.loadClass(name)) != null) {
             System.out.print(clazz.getName() + " ");
           }
-        } catch (ClassNotFoundException e) { }
+        } catch (Throwable e) { }
       }
       if (!fullMode && classNames.length == 1) {
         break;
