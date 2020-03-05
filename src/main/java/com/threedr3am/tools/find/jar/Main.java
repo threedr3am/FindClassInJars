@@ -11,7 +11,9 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.cli.CommandLine;
@@ -96,25 +98,33 @@ public class Main {
     System.out.println("开始查找类：" + className);
     String[] classNames = className.split(",");
     for (File jar : files) {
-      System.out.print(jar.getName() + ":\n");
+      Set<String> classSet = new HashSet<>();
       URLClassLoader classLoader = new URLClassLoader(new URL[]{jar.toURL()});
+      String name;
       for (int i = 0; i < classNames.length; i++) {
-        String name = classNames[i];
+        name = classNames[i];
         try {
           Class clazz;
           if ((clazz = classLoader.loadClass(name)) != null) {
-            System.out.print(clazz.getName() + " ");
+            classSet.add(clazz.getName());
           }
         } catch (Exception e) {
         } catch (Error e) {
+          classSet.add(name);
           System.err.print("该类在此jar包，但缺少其他引用依赖");
         }
+        if (!classSet.isEmpty()) {
+          System.out.println("----------------------------------------------------------------------");
+          System.out.print(jar.getName() + ":\n");
+          for (String c : classSet) {
+            System.out.println(c);
+          }
+          System.out.println();
+        }
       }
-      System.out.println();
       if (!fullMode && classNames.length == 1) {
         break;
       }
-      System.out.println();
     }
   }
 }
