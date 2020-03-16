@@ -37,6 +37,7 @@ public class Main {
         .addOption("path", true, "jar包目录 或 文本文件（可通过正则从文本文件内容提取出jar包路径）")
         .addOption("regex", true, "当path指定为目录时，用于正则匹配jar名称是否符合需要，若为文本文件时，用于正则提取jar文件路径")
         .addOption("full", false, "是否遍历全部文件，缺省则为不全部遍历，从找到该class类后立马结束查找任务")
+        .addOption("cp", true, "当找到jar后，自动拷贝到该目录")
         ;
 
     //parser
@@ -55,6 +56,8 @@ public class Main {
     if (!cmd.hasOption("path")) {
       System.err.println("必须指定path参数，更多信息，执行 java -jar find-class-in-jars-1.0-SNAPSHOT-jar-with-dependencies.jar -help");
     }
+    String cp = cmd.getOptionValue("cp");
+    cp = cp.endsWith("/") ? cp : cp + "/";
 
     String className = cmd.getOptionValue("c");
     String path = cmd.getOptionValue("path");
@@ -120,6 +123,9 @@ public class Main {
             System.out.println(c);
           }
           System.out.println();
+          if (cp != null && !cp.isEmpty()) {
+            Files.copy(jar.toPath(), Paths.get(cp + jar.getName()));
+          }
         }
       }
       if (!fullMode && classNames.length == 1) {
