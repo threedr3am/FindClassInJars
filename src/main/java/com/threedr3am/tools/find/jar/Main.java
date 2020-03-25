@@ -31,8 +31,7 @@ public class Main {
   public static void main(String[] args) throws IOException, ParseException {
 
     Options options = new Options()
-        .addOption("h", false, "帮助信息")
-        .addOption("help", false, "帮助信息")
+        .addOption("h", "help", false, "帮助信息")
         .addOption("c", true, "需要从jar包堆中找出的类名，例：com.threedr3am.tools.find.jar.Main 或 com/threedr3am/tools/find/jar/Main，多个类名以英文逗号分割")
         .addOption("path", true, "jar包目录 或 文本文件（可通过正则从文本文件内容提取出jar包路径）")
         .addOption("regex", true, "当path指定为目录时，用于正则匹配jar名称是否符合需要，若为文本文件时，用于正则提取jar文件路径")
